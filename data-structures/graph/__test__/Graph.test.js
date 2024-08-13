@@ -155,6 +155,90 @@ describe('graph', _ => {
     })
 
     it ('should calculate total graph weight for default graph', _ => {
-        
+        const graph = new Graph();
+
+        const node = new GraphNode('a')
+        const _node = new GraphNode('b')
+        const __node = new GraphNode('c')
+        const _node_ = new GraphNode('d')
+
+        const eab = new GraphEdge(node, _node)
+        const ebc = new GraphEdge(_node, __node)
+        const ecd = new GraphEdge(__node, _node_)
+        const ead = new GraphEdge(node, _node_)
+
+        graph
+            .addEdge(eab)
+            .addEdge(ebc)
+            .addEdge(ecd)
+            .addEdge(ead)
+
+        expect(graph.getWeight()).toBe(0)
     })
+
+    it ('should calcualte total grpah weight for weighted graph', _ => {
+        const graph = new Graph();
+
+        const node = new GraphNode('a')
+        const _node = new GraphNode('b')
+        const __node = new GraphNode('c')
+        const _node_ = new GraphNode('d')
+
+        const eab = new GraphEdge(node, _node, 1)
+        const ebc = new GraphEdge(_node, __node, 2)
+        const ecd = new GraphEdge(__node, _node_, 3)
+        const ead = new GraphEdge(node, _node_, 4)
+
+        graph
+            .addEdge(eab)
+            .addEdge(ebc)
+            .addEdge(ecd)
+            .addEdge(ead)
+
+        expect(graph.getWeight()).toBe(10)
+    })
+
+    it ('should be possible to delete edges from a graph', _ => {
+        const graph = new Graph();
+
+        const node = new GraphNode('a')
+        const _node = new GraphNode('b')
+        const __node = new GraphNode('c')
+
+        const eab = new GraphEdge(node, _node)
+        const ebc = new GraphEdge(_node, __node)
+        const eac = new GraphEdge(node, __node)
+
+        graph
+            .addEdge(eab)
+            .addEdge(ebc)
+            .addEdge(eac)
+
+        expect(graph.getWeight()).toBe(2)
+
+        graph.deleteEdge(eab)
+
+        expect(graph.getAllEdges().length).toBe(2);
+        expect(graph.getAllEdges()[0].getKey()).toBe(ebc.getKey())
+        expect(graph.getAllEdges()[1].getKey()).toBe(eac.getKey())
+    })
+
+    it ('should throw an error when trying to delete a non existing edge', _ => {
+        deleteNoneExisting = () => {
+            const graph = new Graph()
+
+            const node = new GainNode('a')
+            const _node = new GainNode('b')
+            const __node = new GainNode('c')
+
+            const eab = new GraphEdge(node, _node)
+            const ebc = new GraphEdge(_node, __node)
+            graph.addEdge(eab);
+            graph.deleteEdge(ebc)
+        }
+
+        expect(deleteNoneExisting).toThrowError()
+    });
+
+    
 })
