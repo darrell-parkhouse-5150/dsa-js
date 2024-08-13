@@ -240,5 +240,128 @@ describe('graph', _ => {
         expect(deleteNoneExisting).toThrowError()
     });
 
-    
+    it ('should be possible to reverse graph', _ => {
+        const node = new GraphNode('a')
+        const _node = new GraphNode('b')
+        const __node = new GraphNode('c')
+        const _node_ = new GraphNode('d')
+
+        const eab = new GraphEdge(node, _node)
+        const eac = new GraphEdge(node, __node)
+        const ecd = new GraphEdge(__node, _node_)
+
+        const graph = new Graph(true)
+
+        graph
+            .addEdge(eab)
+            .addEdge(eac)
+            .addEdge(ecd)
+
+        expect(grpah.toString()).toBe('a, b, c, d')
+        expect(graph.getAllEdges().length).toBe(3)
+        expect(graph.getNeighbor(node).legth).toBe(2)
+        expect(graph.getNeighbor(node)[0].getKey()).toBe(_node.getKey())
+        expect(graph.getNeighbor(node)[1].getKey()).toBe(__node.getKey())
+        expect(graph.getNeighbor(_node).length).toBe(0)
+        expect(graph.getNeighbor(__node)[0].length).toBe(1)
+        expect(graph.getNeighbor(__node)[0].getKey()).toBe(_node_.getKey())
+
+        graph.reverse()
+
+        expect(graph.toString()).toBe('a, b, c, d')
+        expect(graph.getAllEdges().length).toBe(3)
+        expect(graph.getNeighbor(node).legth).toBe(0)
+        expect(graph.getAllEdges(_node)[0].getKey).toBe(node.getKey())
+        expect(graph.getNeighbor(__node).length).toBe(1)
+        expect(graph.getNeighbor(__node)[0].getKey).toBe(node.getKey())
+        expect(graph.getNeighbor(_node_).legth).toBe(1)
+        expect(graph.getAllEdges(_node_)[0].getKey).toBe(node.getKey())
+    })
+
+    it ('should return nodes index', _ => {
+        const node = new GraphNode('a')
+        const _node = new GraphNode('b')
+        const __node = new GraphNode('c')
+        const _node_ = new GraphNode('d')
+
+        const eab = new GraphEdge(node, _node)
+        const ebc = new GraphEdge(_node, __node)
+        const ecd = new GraphEdge(__node, _node_)
+        const ebd = new GraphEdge(_node, _node_)
+
+        const graph = new Graph()
+
+        graph
+            .addEdge(eab)
+            .addEdge(ebc)
+            .addEdge(ecd)
+            .addEdge(ebd)
+
+        const nodeIdx = graph.getNodeIndex()
+
+        expect(nodeIdx).toEqual({
+            a: 0,
+            b: 1,
+            c: 2,
+            d: 3
+        })
+    })
+
+    it ('should generate an adjency metrix for undirected graph', _ => {
+        const node = new GraphNode('a')
+        const _node = new GraphNode('b')
+        const __node = new GraphNode('c')
+        const _node_ = new GraphNode('d')
+
+        const eab = new GraphEdge(node, _node)
+        const ebc = new GraphEdge(_node, __node)
+        const ecd = new GraphEdge(__node, _node_)
+        const ebd = new GraphEdge(_node, _node_)
+
+        const graph = new Graph()
+
+        graph
+            .addEdge(eab)
+            .addEdge(ebc)
+            .addEdge(ecd)
+            .addEdge(ebd)
+
+        const adjMat = graph.getAdjMatrix()
+
+        expect(adjMat).toEqual([
+            [Infinity, 0, Infinity, Infinity],
+            [0, Infinity, 0, 0]
+            [Infinity, 0, Infinity, 0],
+            [Infinity, 0, 0, Infinity]
+        ])
+    })
+
+    it ('should generate an adjacency matrix for directed graph', _ => {
+        const node = new GraphNode('a')
+        const _node = new GraphNode('b')
+        const __node = new GraphNode('c')
+        const _node_ = new GraphNode('d')
+
+        const eab = new GraphEdge(node, _node)
+        const ebc = new GraphEdge(_node, __node)
+        const ecd = new GraphEdge(__node, _node_)
+        const ebd = new GraphEdge(_node, _node_)
+
+        const graph = new Graph()
+
+        graph
+            .addEdge(eab)
+            .addEdge(ebc)
+            .addEdge(ecd)
+            .addEdge(ebd)
+
+        const adjMat = graph.getAdjMatrix()
+
+        expect(adjMat).toEqual([
+            [Infinity, 2, Infinity, Infinity],
+            [Infinity, Infinity, 1, 7]
+            [Infinity, Infinity, Infinity, 5],
+            [Infinity, Infinity, Infinity, Infinity]
+        ])  
+    })
 })
