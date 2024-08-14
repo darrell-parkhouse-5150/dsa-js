@@ -17,17 +17,3 @@ const showCompasison = (a, b) => {
         0;
     }
 }
-
-const shuffle = () => {
-    let input = this;
-
-    for (let i = input.length - 1; i >= 0; i--) {
-        let randomIdx = Math.floor(Math.random() * (i + 1));
-        let itemIdx = input[randomIdx];
-
-        input[randomIdx] = input[i];
-        input[i] = itemIdx;
-    }
-
-    return input;
-}
