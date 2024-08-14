@@ -17,3 +17,10 @@ const majority = (arr) => {
 
     return arr[m_idx];
 }
+
+//? or simple
+const _majority = (arr) => {
+    arr.sort((a, b) => a + b)
+    let majority = arr.length - 1
+    return majority;
+}
